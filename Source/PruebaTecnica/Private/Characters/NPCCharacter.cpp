@@ -3,17 +3,13 @@
 
 #include "Characters/NPCCharacter.h"
 
-#include "Components/SphereComponent.h"
-
-
 ANPCCharacter::ANPCCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-
-void ANPCCharacter::OnInteract_Implementation()
+void ANPCCharacter::OnInteract_Implementation(AActor* InteractedBy)
 {
-	Super::OnInteract_Implementation();
+	UE_LOG(LogTemp, Warning, TEXT("%s was interacted by %s"), *GetName(), *InteractedBy->GetName());
 }
 

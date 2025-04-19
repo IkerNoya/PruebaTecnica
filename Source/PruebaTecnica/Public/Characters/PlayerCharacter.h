@@ -27,7 +27,10 @@ protected:
 
 	virtual void PossessedBy(AController* NewController) override;
 
-	virtual void OnInteract_Implementation() override;	
+	virtual void OnInteract_Implementation(AActor* InteractedBy) override;
+
+	virtual void OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+	virtual void OnInteractionSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
@@ -58,4 +61,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* ToggleWalkInputAction = nullptr;
+
+private:
+	UPROPERTY()
+	TArray<AActor*> InteractableActors;
 };

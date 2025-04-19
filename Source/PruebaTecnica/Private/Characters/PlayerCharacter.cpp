@@ -42,9 +42,27 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 	}	
 }
 
-void APlayerCharacter::OnInteract_Implementation()
+void APlayerCharacter::OnInteract_Implementation(AActor* InteractedBy)
 {
-	Super::OnInteract_Implementation();
+	Super::OnInteract_Implementation(InteractedBy);
+}
+
+void APlayerCharacter::OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor != this && OtherActor->IsA(ABaseCharacter::StaticClass()) && !InteractableActors.Contains(OtherActor))
+	{
+		InteractableActors.Add(OtherActor);	
+	}
+}
+
+void APlayerCharacter::OnInteractionSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor != this && OtherActor->IsA(ABaseCharacter::StaticClass()) && InteractableActors.Contains(OtherActor))
+	{
+		InteractableActors.Remove(OtherActor);
+	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& InputActionValue)
@@ -82,7 +100,32 @@ void APlayerCharacter::Look(const FInputActionValue& InputActionValue)
 
 void APlayerCharacter::Interact()
 {
-	//TODO: Handle interaction
+	if (InteractableActors.IsEmpty())
+	{
+		return;
+	}
+
+	float ClosestDistance = FLT_MAX;
+	const FVector CurrentLocation = GetActorLocation();
+	AActor* SelectedActor = nullptr;
+	for (AActor* Actor : InteractableActors)
+	{
+		const FVector ActorLocation = Actor->GetActorLocation();
+		float Distance = FVector::Dist(CurrentLocation, ActorLocation);
+		if (Distance < ClosestDistance)
+		{
+			ClosestDistance = Distance;
+			SelectedActor = Actor;
+		}
+	}
+
+	IInteractionInterface* Interactable = Cast<IInteractionInterface>(SelectedActor);
+	if (!Interactable)
+	{
+		return;
+	}
+
+	Interactable->Execute_OnInteract(SelectedActor, this);
 }
 
 void APlayerCharacter::ToggleWalk(const FInputActionValue& InputActionValue)

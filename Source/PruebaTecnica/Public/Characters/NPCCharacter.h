@@ -17,6 +17,6 @@ public:
 	ANPCCharacter();
 
 protected:
-	virtual void OnInteract_Implementation() override;
+	virtual void OnInteract_Implementation(AActor* InteractedBy) override;
 
 };

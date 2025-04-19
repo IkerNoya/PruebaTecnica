@@ -16,19 +16,24 @@ ABaseCharacter::ABaseCharacter()
 
 
 
-void ABaseCharacter::OnInteract_Implementation()
+void ABaseCharacter::OnInteract_Implementation(AActor* InteractedBy)
 {
-	IInteractionInterface::OnInteract_Implementation();
+	IInteractionInterface::OnInteract_Implementation(InteractedBy);
 }
 
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	InteractionSphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseCharacter::OnInteractionSphereOverlap);
+	InteractionSphere->OnComponentEndOverlap.AddDynamic(this, &ABaseCharacter::OnInteractionSphereOverlapEnd);
 }
 
 void ABaseCharacter::OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
+}
+
+void ABaseCharacter::OnInteractionSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
 }

@@ -14,7 +14,7 @@ class PRUEBATECNICA_API ABaseCharacter : public ACharacter, public IInteractionI
 
 public:
 	ABaseCharacter();
-	void OnInteract_Implementation() override;
+	void OnInteract_Implementation(AActor* InteractedBy) override;
 
 protected:
 
@@ -23,6 +23,8 @@ protected:
 	UFUNCTION()
 	virtual void OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	virtual void OnInteractionSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class USphereComponent* InteractionSphere;

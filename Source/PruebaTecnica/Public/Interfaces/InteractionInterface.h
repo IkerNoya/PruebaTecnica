@@ -21,5 +21,5 @@ class PRUEBATECNICA_API IInteractionInterface
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void OnInteract();
+	void OnInteract(AActor* InteractedBy);
 };
