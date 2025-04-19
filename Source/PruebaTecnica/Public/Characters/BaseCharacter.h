@@ -4,55 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "EnhancedInput/Public/EnhancedInputComponent.h"
-#include "InputMappingContext.h"
+#include "Interfaces/InteractionInterface.h"
 #include "BaseCharacter.generated.h"
 
-class USpringArmComponent;
-class UCameraComponent;
-
 UCLASS()
-class PRUEBATECNICA_API ABaseCharacter : public ACharacter
+class PRUEBATECNICA_API ABaseCharacter : public ACharacter, public IInteractionInterface
 {
 	GENERATED_BODY()
 
 public:
 	ABaseCharacter();
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void OnInteract_Implementation() override;
 
 protected:
+
 	virtual void BeginPlay() override;
 
-	virtual void PossessedBy(AController* NewController) override;
-
-	void Move(const FInputActionValue& InputActionValue);
-	void Look(const FInputActionValue& InputActionValue);
-	void ToggleWalk(const FInputActionValue& InputActionValue);
+	UFUNCTION()
+	virtual void OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-	void Interact();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	UCameraComponent* CameraComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	USpringArmComponent* SpringArmComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputMappingContext* MappingContext = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* JumpInputAction = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* InteractInputAction = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* MoveInputAction = nullptr;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* LookInputAction = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	UInputAction* ToggleWalkInputAction = nullptr;
+	class USphereComponent* InteractionSphere;
 };
