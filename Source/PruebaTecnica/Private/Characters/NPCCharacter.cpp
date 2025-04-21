@@ -3,6 +3,9 @@
 
 #include "Characters/NPCCharacter.h"
 
+#include "GameModes/TestGameMode.h"
+#include "UI/PlayerHUD.h"
+
 ANPCCharacter::ANPCCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -10,6 +13,21 @@ ANPCCharacter::ANPCCharacter()
 
 void ANPCCharacter::OnInteract_Implementation(AActor* InteractedBy)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s was interacted by %s"), *GetName(), *InteractedBy->GetName());
+	ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(InteractedBy);
+	if (!BaseCharacter)
+	{
+		return;
+	}
+	
+	APlayerController* PlayerController = BaseCharacter->GetController<APlayerController>();
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	if (APlayerHUD* HUD = PlayerController->GetHUD<APlayerHUD>())
+	{
+		HUD->ShowSpawnWidget();
+	}
 }
 
