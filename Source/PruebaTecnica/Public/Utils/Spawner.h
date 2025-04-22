@@ -17,18 +17,22 @@ class PRUEBATECNICA_API ASpawner : public AActor
 public:
 	ASpawner();
 
+	/** Function that begins spawning process */
 	UFUNCTION()
 	void ExecuteSpawn(int32 Amount, float Lifetime);
 
 protected:
 	virtual void BeginPlay() override;
 
+	/** Class of actor we want to spawn */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
 	TSubclassOf<AActor> ActorToSpawn;	
 
+	/** Array of spawn points to be used for spawning */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawner")
-	TArray<ASpawnArea*> SpawnPoints;
+	TArray<ASpawnArea*> SpawnAreas;
 
+	/** Array of spawned actors to be reused for object pooling */
 	UPROPERTY(VisibleAnywhere, Category = "Spawner")
 	TArray<ASpawnableActor*> SpawnedActors;
 };

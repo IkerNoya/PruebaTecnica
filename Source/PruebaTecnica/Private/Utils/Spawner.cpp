@@ -15,12 +15,14 @@ ASpawner::ASpawner()
 }
 
 void ASpawner::ExecuteSpawn(int32 Amount, float Lifetime)
-{	
+{
 	for (int32 i = 0; i < Amount; i++)
 	{
-		int32 RandomIndex = FMath::RandRange(0, SpawnPoints.Num() - 1);
-		const FVector SpawnLocation = SpawnPoints[RandomIndex]->GetRandomSpawnLocation();
+		int32 RandomIndex = FMath::RandRange(0, SpawnAreas.Num() - 1);
+		const FVector SpawnLocation = SpawnAreas[RandomIndex]->GetRandomSpawnLocation();
 		FRotator SpawnRotation = FRotator::ZeroRotator;
+		
+		// Check if I can use deactivated actors before trying to spawn new ones
 		if (SpawnedActors.Num() > 0 && i < SpawnedActors.Num() && !SpawnedActors[i]->IsActive())
 		{
 			SpawnedActors[i]->SetActorLocation(SpawnLocation);

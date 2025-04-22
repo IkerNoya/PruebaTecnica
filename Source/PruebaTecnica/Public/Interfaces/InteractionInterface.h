@@ -13,13 +13,14 @@ class UInteractionInterface : public UInterface
 };
 
 /**
- * Interface to act interactability to actors
+ * Interface to make actors interactable
  */
 class PRUEBATECNICA_API IInteractionInterface
 {
 	GENERATED_BODY()
 
 public:
+	/** Functions that activates when actor is interacted by another one */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnInteract(AActor* InteractedBy);
 };

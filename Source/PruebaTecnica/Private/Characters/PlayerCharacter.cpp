@@ -105,6 +105,7 @@ void APlayerCharacter::Interact()
 		return;
 	}
 
+	// Check closest actor to interact with
 	float ClosestDistance = FLT_MAX;
 	const FVector CurrentLocation = GetActorLocation();
 	AActor* SelectedActor = nullptr;
@@ -132,7 +133,7 @@ void APlayerCharacter::ToggleWalk(const FInputActionValue& InputActionValue)
 {
 	const bool bIsWalking = InputActionValue.Get<bool>();
 	const float CurrentSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	const float NewSpeed = bIsWalking ? 250.0f : 500.0f;
+	const float NewSpeed = bIsWalking ? WalkSpeed : RunSpeed;
 	GetCharacterMovement()->MaxWalkSpeed = NewSpeed;
 }
 

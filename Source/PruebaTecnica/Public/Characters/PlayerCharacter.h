@@ -62,7 +62,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* ToggleWalkInputAction = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player")
+	float RunSpeed = 400.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player")
+	float WalkSpeed = 150.0f;
+
 private:
+	/** Array that saves actors in interaction range */
 	UPROPERTY()
 	TArray<AActor*> InteractableActors;
 };

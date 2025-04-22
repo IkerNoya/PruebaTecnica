@@ -23,6 +23,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class UStaticMeshComponent* Mesh;
+	
 private:
 	void OnLifeSpanExpired();
 

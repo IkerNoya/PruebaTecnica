@@ -32,9 +32,11 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnClose();
 
+	/** Amount of Actors we want to spawn */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 AmountToSpawn = 0;
 
+	/** Amount of time the Actor has before being deactivated after spawn */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 1.0, UIMin = 1.0))
 	float Lifetime = 1.0f;
 };

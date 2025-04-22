@@ -8,7 +8,7 @@
 
 ANPCCharacter::ANPCCharacter()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void ANPCCharacter::OnInteract_Implementation(AActor* InteractedBy)
