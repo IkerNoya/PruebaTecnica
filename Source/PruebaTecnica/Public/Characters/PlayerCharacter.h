@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "InputMappingContext.h"
+#include "Components/TimelineComponent.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -23,15 +24,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	virtual void BeginPlay() override;
-
 	virtual void PossessedBy(AController* NewController) override;
+
+	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void OnInteract_Implementation(AActor* InteractedBy) override;
 
 	virtual void OnInteractionSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 	virtual void OnInteractionSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
-
+	
 	void Move(const FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 	void ToggleWalk(const FInputActionValue& InputActionValue);
@@ -68,8 +69,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player")
 	float WalkSpeed = 150.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player")
+	float WalkInterpSpeed = 1.0f;
+
 private:
+
+	void HandleSpeedChange(float DeltaSeconds);
+	
 	/** Array that saves actors in interaction range */
 	UPROPERTY()
 	TArray<AActor*> InteractableActors;
+	
+	bool bIsWalking = false;
+	bool bIsChangingSpeed = false;
 };

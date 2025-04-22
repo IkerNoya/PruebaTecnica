@@ -23,12 +23,6 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->bUsePawnControlRotation = false;
 }
 
-void APlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
 void APlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -40,6 +34,13 @@ void APlayerCharacter::PossessedBy(AController* NewController)
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}	
+}
+
+void APlayerCharacter::Tick(float DeltaSeconds)
+{
+	HandleSpeedChange(DeltaSeconds);
+	
+	Super::Tick(DeltaSeconds);
 }
 
 void APlayerCharacter::OnInteract_Implementation(AActor* InteractedBy)
@@ -129,12 +130,30 @@ void APlayerCharacter::Interact()
 	Interactable->Execute_OnInteract(SelectedActor, this);
 }
 
+void APlayerCharacter::HandleSpeedChange(float DeltaSeconds)
+{
+	if (!bIsChangingSpeed)
+	{
+		return;
+	}
+
+	UCharacterMovementComponent* CharMoveComp = GetCharacterMovement();
+	float CurrentSpeed = CharMoveComp->MaxWalkSpeed;
+	const float TargetSpeed = bIsWalking ? WalkSpeed : RunSpeed;
+	
+	CurrentSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaSeconds, WalkInterpSpeed);
+	CharMoveComp->MaxWalkSpeed = CurrentSpeed;
+	
+	if (FMath::IsNearlyEqual(CurrentSpeed, TargetSpeed, 0.05f))
+	{
+		bIsChangingSpeed = false;
+	}
+}
+
 void APlayerCharacter::ToggleWalk(const FInputActionValue& InputActionValue)
 {
-	const bool bIsWalking = InputActionValue.Get<bool>();
-	const float CurrentSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	const float NewSpeed = bIsWalking ? WalkSpeed : RunSpeed;
-	GetCharacterMovement()->MaxWalkSpeed = NewSpeed;
+	bIsWalking = InputActionValue.Get<bool>();
+	bIsChangingSpeed = true;
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
