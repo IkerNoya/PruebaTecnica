@@ -11,7 +11,7 @@ public class PruebaTecnica : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-			"UMG", "Slate", "SlateCore"
+			"UMG", "Slate", "SlateCore", "NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

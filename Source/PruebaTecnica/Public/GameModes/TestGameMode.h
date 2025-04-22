@@ -6,9 +6,11 @@
 #include "GameFramework/GameMode.h"
 #include "TestGameMode.generated.h"
 
+class ASpawner;
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSpawnCalled, int32, SpawnCount, float, Lifetime);
 UCLASS()
 class PRUEBATECNICA_API ATestGameMode : public AGameMode
 {
@@ -16,5 +18,8 @@ class PRUEBATECNICA_API ATestGameMode : public AGameMode
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SpawnActors(TArray<AActor*> Spawners, TSubclassOf<AActor> ActorToSpawnClass, int32 SpawnCount, float Lifetime);
+	void SendSpawnMessage(int32 SpawnCount, float Lifetime);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSpawnCalled OnSpawnCalled;
 };

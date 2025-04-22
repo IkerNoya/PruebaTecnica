@@ -4,6 +4,7 @@
 #include "UI/PlayerHUD.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/Character.h"
+#include "GameModes/TestGameMode.h"
 #include "UI/SpawnerWidget.h"
 
 void APlayerHUD::ShowSpawnWidget()
@@ -42,6 +43,7 @@ void APlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayerController = Cast<APlayerController>(GetOwner());
+	GameMode = GetWorld()->GetAuthGameMode<ATestGameMode>();
 }
 
 void APlayerHUD::OnSpawn(int32 Amount, float Lifetime)
@@ -51,6 +53,5 @@ void APlayerHUD::OnSpawn(int32 Amount, float Lifetime)
 		return;
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("PlayerHUD::OnSpawn: Lifetime: %f | Amount: %d"), Lifetime, Amount);
-	//Call gamemode
+	GameMode->SendSpawnMessage(Amount, Lifetime);
 }

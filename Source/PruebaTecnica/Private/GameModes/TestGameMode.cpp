@@ -3,7 +3,12 @@
 
 #include "GameModes/TestGameMode.h"
 
-void ATestGameMode::SpawnActors(TArray<AActor*> Spawners, TSubclassOf<AActor> ActorToSpawnClass, int32 SpawnCount, float Lifetime)
+#include "Utils/Spawner.h"
+
+void ATestGameMode::SendSpawnMessage(int32 SpawnCount, float Lifetime)
 {
-	//Handle actor spawning
+	if (OnSpawnCalled.IsBound())
+	{
+		OnSpawnCalled.Broadcast(SpawnCount, Lifetime);
+	}
 }

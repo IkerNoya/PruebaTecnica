@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "PlayerHUD.generated.h"
 
+class ATestGameMode;
 class USpawnerWidget;
 /**
  * 
@@ -36,5 +37,8 @@ protected:
 
 private:
 	UPROPERTY()
-	APlayerController* PlayerController;	
+	APlayerController* PlayerController;
+
+	UPROPERTY()
+	ATestGameMode* GameMode;
 };
