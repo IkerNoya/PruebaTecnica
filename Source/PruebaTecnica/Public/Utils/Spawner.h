@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Spawner.generated.h"
 
+class ASpawnableActor;
 class ASpawnArea;
 
 UCLASS()
@@ -29,5 +30,5 @@ protected:
 	TArray<ASpawnArea*> SpawnPoints;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawner")
-	TArray<AActor*> SpawnedActors;
+	TArray<ASpawnableActor*> SpawnedActors;
 };

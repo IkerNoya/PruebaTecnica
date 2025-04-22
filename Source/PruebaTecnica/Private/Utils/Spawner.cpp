@@ -4,6 +4,7 @@
 #include "Utils/Spawner.h"
 
 #include "NavigationSystem.h"
+#include "Actor/SpawnableActor.h"
 #include "GameModes/TestGameMode.h"
 #include "Utils/SpawnArea.h"
 
@@ -14,17 +15,26 @@ ASpawner::ASpawner()
 }
 
 void ASpawner::ExecuteSpawn(int32 Amount, float Lifetime)
-{
+{	
 	for (int32 i = 0; i < Amount; i++)
 	{
 		int32 RandomIndex = FMath::RandRange(0, SpawnPoints.Num() - 1);
 		const FVector SpawnLocation = SpawnPoints[RandomIndex]->GetRandomSpawnLocation();
 		FRotator SpawnRotation = FRotator::ZeroRotator;
+		if (SpawnedActors.Num() > 0 && i < SpawnedActors.Num() && !SpawnedActors[i]->IsActive())
+		{
+			SpawnedActors[i]->SetActorLocation(SpawnLocation);
+			SpawnedActors[i]->SetActorRotation(SpawnRotation);
+			SpawnedActors[i]->SetLifeSpan(Lifetime);
+			continue;
+		}
+		
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.Owner = this;
-		if (AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorToSpawn, SpawnLocation, SpawnRotation, SpawnParameters))
+		if (ASpawnableActor* SpawnedActor = GetWorld()->SpawnActor<ASpawnableActor>(ActorToSpawn, SpawnLocation, SpawnRotation, SpawnParameters))
 		{
 			SpawnedActor->SetLifeSpan(Lifetime);
+			SpawnedActors.Add(SpawnedActor);
 		}	
 	}
 }

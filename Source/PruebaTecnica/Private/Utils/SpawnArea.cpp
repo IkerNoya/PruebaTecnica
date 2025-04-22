@@ -12,6 +12,7 @@ ASpawnArea::ASpawnArea()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	SpawnArea = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnArea"));
+	SetRootComponent(SpawnArea);
 }
 
 FVector ASpawnArea::GetRandomSpawnLocation() const
